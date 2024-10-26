@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Usuarios</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Transporte Collasuyo</h1>
+        <a href="login.html" style="color: white;">Cerrar sesión</a>
+    </div>
+    <div class="sidebar">
+        <h3>Menú</h3>
+        <a href="estadisticas.html">Predicción de tiempo y Distancia de Viaje</a>
+        <a href="gps.html">Monitoreo GPS</a>
+        <a href="control-rutas.html">Control de Ruta</a>
+        <a href="notificaciones.html">Notificaciones y Alertas</a>
+        <a href="historial.html">Historial de Cambios</a>
+        <a href="gestor-usuarios.html">Gestor de Usuarios</a>
+    </div>
+
+    <div class="content">
+        <div class="main-content">
+            <h2>Gestor de Usuarios</h2>
+            <h3>Agregar Nuevo Usuario</h3>
+            <form id="userForm" onsubmit="addUser(event)">
+                <input type="text" id="username" placeholder="Nombre de Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <select id="userType">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Operador">Operador</option>
+                    <option value="Pasajero">Pasajero</option>
+                    <option value="Conductor">Conductor</option>
+                </select>
+                <button type="submit" class="button">Agregar Usuario</button>
+            </form>
+
+            <h3>Usuarios Registrados</h3>
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>Nombre de Usuario</th>
+                        <th>Tipo de Usuario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const users = [];
+
+        function addUser(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+
+            const user = { username, password, userType };
+            users.push(user);
+            displayUsers();
+            document.getElementById('userForm').reset();
+        }
+
+        function displayUsers() {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            users.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.userType}</td>
+                    <td>
+                        <button onclick="editUser(${index})" class="button">Editar</button>
+                        <button onclick="deleteUser(${index})" class="button">Eliminar</button>
+                    </td>
+                `;
+                userList.appendChild(row);
+            });
+        }
+
+        function editUser(index) {
+            const user = users[index];
+            const newUsername = prompt("Nuevo Nombre de Usuario:", user.username);
+            const newPassword = prompt("Nueva Contraseña:", user.password);
+
+            if (newUsername) user.username = newUsername;
+            if (newPassword) user.password = newPassword;
+
+            displayUsers();
+        }
+
+        function deleteUser(index) {
+            if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+                users.splice(index, 1);
+                displayUsers();
+            }
+        }
+    </script>
+</body>
+</html>

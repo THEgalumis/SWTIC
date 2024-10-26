@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Transporte Collasuyo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+        }
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-box h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .textbox {
+            margin-bottom: 15px;
+        }
+        .textbox input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box" id="login-box">
+            <h1>Iniciar Sesión</h1>
+            <form onsubmit="handleLogin(event)">
+                <div class="textbox">
+                    <input type="text" id="username" placeholder="Usuario" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" id="password" placeholder="Contraseña" required>
+                </div>
+                <input type="submit" class="btn" value="Iniciar sesión">
+                <div class="link">
+                    <a href="#" onclick="showRegister()">Registrarse como pasajero</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="login-box" id="register-box" style="display: none;">
+            <h1>Registro de Pasajero</h1>
+            <form onsubmit="handleRegister(event)">
+                <div class="textbox">
+                    <input type="text" id="reg-username" placeholder="Usuario" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" id="reg-password" placeholder="Contraseña" required>
+                </div>
+                <div class="textbox">
+                    <input type="email" id="reg-email" placeholder="Correo Electrónico" required>
+                </div>
+                <input type="submit" class="btn" value="Registrarse">
+                <div class="link">
+                    <a href="#" onclick="showLogin()">Volver a Iniciar Sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let usuarios = [];
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'admin' && password === 'admin') {
+                window.location.href = 'index.html';
+            } else {
+                const usuario = usuarios.find(user => user.username === username && user.password === password);
+                if (usuario) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Credenciales incorrectas');
+                }
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const regUsername = document.getElementById('reg-username').value;
+            const regPassword = document.getElementById('reg-password').value;
+            const regEmail = document.getElementById('reg-email').value;
+
+            usuarios.push({ username: regUsername, password: regPassword, email: regEmail });
+            alert('Registro exitoso. Ahora puedes iniciar sesión.');
+            showLogin();
+        }
+
+        function showLogin() {
+            document.getElementById('register-box').style.display = 'none';
+            document.getElementById('login-box').style.display = 'block';
+        }
+
+        function showRegister() {
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('register-box').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
